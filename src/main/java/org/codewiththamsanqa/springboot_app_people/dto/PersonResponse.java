@@ -6,9 +6,4 @@ public record PersonResponse(
         String name,
         String email
 ) {
-
-    public PersonResponse fromEntity(Person person){
-
-        return new PersonResponse(person.getName(), person.getEmail());
-    }
 }
