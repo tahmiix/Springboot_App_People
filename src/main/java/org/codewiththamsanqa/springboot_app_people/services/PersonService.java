@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Service
 public class PersonService {
@@ -24,8 +26,9 @@ public class PersonService {
     public PersonResponse createPerson(PersonRequest request){
         Person person = new Person();
 
-        person.setName(request.name());
         person.setEmail(request.email());
+        person.setName(request.name());
+
 
         Person savedPerson = personRepository.save(person);
 
@@ -40,12 +43,45 @@ public class PersonService {
         return new PersonResponse(person.getName(),person.getEmail());
     }
 
+    public List<Person> getAll(){
+
+        List<Person> users = personRepository.findAll();
+
+        return users;
+
+    }
+
+    @PutMapping
+    public PersonResponse updatePerson(Long id, PersonRequest request){
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new ResponseException("NOT FOUND"));
+
+        person.setEmail(request.email());
+        person.setName(request.name());
+
+        Person savedPerson = personRepository.save(person);
+        return fromEntity(savedPerson);
+
+    }
+
+    public String deletePerson(Long id){
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new ResponseException("NOT FOUND"));
+
+        personRepository.delete(person);
+
+        return "Removed";
+
+    }
 
     private PersonResponse fromEntity(Person person){
         return new PersonResponse(
-                person.getEmail(),
-                person.getName()
+                person.getName(),
+                person.getEmail()
+
         );
     }
+
+
     
 }

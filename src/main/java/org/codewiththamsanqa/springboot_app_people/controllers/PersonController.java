@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/person")
 public class PersonController {
@@ -31,5 +33,24 @@ public class PersonController {
         PersonResponse response = personService.getPerson(id);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(response);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Person>> getAll(){
+      return  ResponseEntity.status(HttpStatus.FOUND).body(personService.getAll());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PersonResponse> updatePerson(@PathVariable Long id, @RequestBody PersonRequest request){
+        PersonResponse response = personService.updatePerson(id,request);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePerson(@PathVariable Long id){
+        personService.deletePerson(id);
+
+        return ResponseEntity.ok().body("Deleted");
     }
 }

@@ -6,4 +6,5 @@ public record PersonResponse(
         String name,
         String email
 ) {
+
 }
