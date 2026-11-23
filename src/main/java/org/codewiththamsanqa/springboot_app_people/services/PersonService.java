@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Service
-@RequestMapping("/api/person")
 public class PersonService {
     
     final PersonRepository personRepository;
@@ -22,7 +21,7 @@ public class PersonService {
     }
     
     @PostMapping
-    public PersonResponse createPerson(@RequestBody PersonRequest request){
+    public PersonResponse createPerson(PersonRequest request){
         Person person = new Person();
 
         person.setName(request.name());
@@ -33,8 +32,8 @@ public class PersonService {
         return fromEntity(savedPerson);
     }
 
-    @GetMapping("/{id}")
-    public PersonResponse getPerson(@PathVariable Long id){
+
+    public PersonResponse getPerson(Long id){
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new ResponseException("Not Found"));
 
